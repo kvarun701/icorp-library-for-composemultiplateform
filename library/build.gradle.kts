@@ -3,7 +3,11 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("maven-publish")
 }
+
+group = "icorp"
+version = "1.0.0"
 
 kotlin {
     androidTarget {
@@ -72,5 +76,12 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+publishing {
+    publications {
+        // Kotlin Multiplatform automatically creates publications for all targets
+        // (android, desktop, iosX64, iosArm64, iosSimulatorArm64)
     }
 }

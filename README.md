@@ -17,23 +17,56 @@
 
 ## 🛠️ Step-by-Step Integration
 
-### Step 1: Copy the `:library` Module
-Copy the `library` folder from this project into your Compose Multiplatform project directory.
+### Option A: Local Maven Dependency (Recommended)
+This option compiles and installs the library into your local Maven cache, allowing any Compose Multiplatform project on your computer to import it.
 
-### Step 2: Include `:library` in your settings.gradle.kts
-Open your project's `settings.gradle.kts` and include the library module:
-```kotlin
-include(":library")
-```
+1. **Publish the Library:**
+   In your terminal, navigate to the `icorp` library project directory and run:
+   ```bash
+   ./gradlew :library:publishToMavenLocal
+   ```
+2. **Enable Local Maven in Target Project:**
+   In your target project's root `settings.gradle.kts` (or `build.gradle.kts`), make sure `mavenLocal()` is in the repository list:
+   ```kotlin
+   dependencyResolutionManagement {
+       repositories {
+           google()
+           mavenCentral()
+           mavenLocal() // Add this line
+       }
+   }
+   ```
+3. **Add the Dependency:**
+   In your target project's shared/common module `build.gradle.kts` (e.g., `composeApp/build.gradle.kts`), declare the dependency:
+   ```kotlin
+   kotlin {
+       sourceSets {
+           commonMain.dependencies {
+               implementation("icorp:library:1.0.0")
+           }
+       }
+   }
+   ```
 
-### Step 3: Add Dependency to App Modules
-In your application module's `build.gradle.kts` (e.g., `:composeApp/build.gradle.kts` or `:androidApp/build.gradle.kts`), add the project dependency:
+---
 
-```kotlin
-dependencies {
-    implementation(project(":library"))
-}
-```
+### Option B: Direct Project Module Reference
+1. **Copy the `:library` Module:**
+   Copy the `library` folder from the `icorp` directory into your target project directory.
+
+2. **Include `:library` in settings.gradle.kts:**
+   Open your target project's `settings.gradle.kts` and include the module:
+   ```kotlin
+   include(":library")
+   ```
+
+3. **Add Project Dependency:**
+   In your target project's shared module `build.gradle.kts`, add the project reference:
+   ```kotlin
+   dependencies {
+       implementation(project(":library"))
+   }
+   ```
 
 ---
 
