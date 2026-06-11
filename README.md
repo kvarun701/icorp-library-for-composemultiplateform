@@ -2,6 +2,10 @@
 
 **icorp** is a modern, premium, and fully platform-agnostic image cropping library built using Kotlin Multiplatform and Jetpack Compose Multiplatform. It targets **Android**, **iOS**, and **Desktop (JVM)** with 100% shared UI and business logic.
 
+<p align="center">
+  <img src="assets/ui_mockup.png" width="320" alt="icorp UI Mockup"/>
+</p>
+
 ---
 
 ## ✨ Features
