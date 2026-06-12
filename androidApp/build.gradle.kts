@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":library"))
+    implementation(project(":icorp"))
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation(compose.runtime)

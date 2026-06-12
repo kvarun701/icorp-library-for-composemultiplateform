@@ -4,9 +4,10 @@ plugins {
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.plugin.compose")
     id("maven-publish")
+    signing
 }
 
-group = "icorp"
+group = "io.github.kvarun701"
 version = "1.0.0"
 
 kotlin {
@@ -80,8 +81,52 @@ android {
 }
 
 publishing {
-    publications {
-        // Kotlin Multiplatform automatically creates publications for all targets
-        // (android, desktop, iosX64, iosArm64, iosSimulatorArm64)
+    publications.withType<MavenPublication> {
+        pom {
+            name.set("icorp")
+            description.set("Compose Multiplatform Image Cropper")
+            url.set("https://github.com/kvarun701/icorp-library-for-composemultiplateform")
+            licenses {
+                license {
+                    name.set("The Apache Software License, Version 2.0")
+                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+            }
+            developers {
+                developer {
+                    id.set("kvarun701")
+                    name.set("Varun")
+                    email.set("kvarun701@gmail.com")
+                }
+            }
+            scm {
+                connection.set("scm:git:git://github.com/kvarun701/icorp-library-for-composemultiplateform.git")
+                developerConnection.set("scm:git:ssh://github.com/kvarun701/icorp-library-for-composemultiplateform.git")
+                url.set("https://github.com/kvarun701/icorp-library-for-composemultiplateform")
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "sonatype"
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = project.findProperty("ossrhUsername")?.toString() ?: ""
+                password = project.findProperty("ossrhPassword")?.toString() ?: ""
+            }
+        }
+    }
+}
+
+signing {
+    val signingKeyId = project.findProperty("signingKeyId")?.toString() ?: project.findProperty("signing.keyId")?.toString()
+    val signingKey = project.findProperty("signingKey")?.toString() ?: project.findProperty("signing.key")?.toString()
+    val signingPassword = project.findProperty("signingPassword")?.toString() ?: project.findProperty("signing.password")?.toString()
+
+    if (!signingKey.isNullOrEmpty()) {
+        useInMemoryPgpKeys(signingKeyId ?: "", signingKey, signingPassword ?: "")
+        sign(publishing.publications)
+    } else if (project.hasProperty("signing.secretKeyRingFile")) {
+        sign(publishing.publications)
     }
 }

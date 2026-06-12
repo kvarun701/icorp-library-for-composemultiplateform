@@ -21,8 +21,25 @@
 
 ## 🛠️ Step-by-Step Integration
 
-### Option A: JitPack Dependency (Recommended)
-This option allows you to import the library directly from GitHub without building the source code yourself.
+### Option A: Maven Central (Recommended)
+This is the standard and most reliable way to consume the library. Since the library is published on Maven Central, you do not need to add any custom repositories.
+
+1. **Add the Dependency:**
+   In your target project's shared/common module `build.gradle.kts` (e.g., `composeApp/build.gradle.kts`), add the dependency:
+   ```kotlin
+   kotlin {
+       sourceSets {
+           commonMain.dependencies {
+               implementation("io.github.kvarun701:icorp:1.0.0")
+           }
+       }
+   }
+   ```
+
+---
+
+### Option B: JitPack Dependency
+You can also import the library directly from GitHub via JitPack.
 
 1. **Add the JitPack Repository:**
    In your target project's root `settings.gradle.kts` (or `build.gradle.kts`), add the JitPack maven repository:
@@ -37,12 +54,12 @@ This option allows you to import the library directly from GitHub without buildi
    ```
 
 2. **Add the Dependency:**
-   In your target project's shared/common module `build.gradle.kts` (e.g., `composeApp/build.gradle.kts`), add the dependency. Replace `Tag` with the latest release version (e.g., `1.0.0`) or a specific commit hash:
+   In your target project's shared/common module `build.gradle.kts` (e.g., `composeApp/build.gradle.kts`), add the dependency. Replace `Tag` with a release version (e.g., `1.0.0`) or a specific commit hash:
    ```kotlin
    kotlin {
        sourceSets {
            commonMain.dependencies {
-               implementation("com.github.kvarun701.icorp-library-for-composemultiplateform:library:Tag")
+               implementation("com.github.kvarun701.icorp-library-for-composemultiplateform:icorp:Tag")
            }
        }
    }
@@ -50,13 +67,13 @@ This option allows you to import the library directly from GitHub without buildi
 
 ---
 
-### Option B: Local Maven Dependency
+### Option C: Local Maven Dependency
 This option compiles and installs the library into your local Maven cache, allowing any Compose Multiplatform project on your computer to import it.
 
 1. **Publish the Library:**
-   In your terminal, navigate to the `icorp` library project directory and run:
+   In your terminal, navigate to the project directory and run:
    ```bash
-   ./gradlew :library:publishToMavenLocal
+   ./gradlew :icorp:publishToMavenLocal
    ```
 2. **Enable Local Maven in Target Project:**
    In your target project's root `settings.gradle.kts` (or `build.gradle.kts`), make sure `mavenLocal()` is in the repository list:
@@ -75,7 +92,7 @@ This option compiles and installs the library into your local Maven cache, allow
    kotlin {
        sourceSets {
            commonMain.dependencies {
-               implementation("icorp:library:1.0.0")
+               implementation("io.github.kvarun701:icorp:1.0.0")
            }
        }
    }
@@ -83,21 +100,21 @@ This option compiles and installs the library into your local Maven cache, allow
 
 ---
 
-### Option C: Direct Project Module Reference
+### Option D: Direct Project Module Reference
 1. **Copy the `:library` Module:**
    Copy the `library` folder from the `icorp` directory into your target project directory.
 
-2. **Include `:library` in settings.gradle.kts:**
+2. **Include `:icorp` in settings.gradle.kts:**
    Open your target project's `settings.gradle.kts` and include the module:
    ```kotlin
-   include(":library")
+   include(":icorp")
    ```
 
 3. **Add Project Dependency:**
    In your target project's shared module `build.gradle.kts`, add the project reference:
    ```kotlin
    dependencies {
-       implementation(project(":library"))
+       implementation(project(":icorp"))
    }
    ```
 

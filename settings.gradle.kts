@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "icorp"
-include(":library")
+include(":icorp")
+project(":icorp").projectDir = file("library")
 include(":sample")
 include(":androidApp")
