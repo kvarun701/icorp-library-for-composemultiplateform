@@ -21,7 +21,36 @@
 
 ## 🛠️ Step-by-Step Integration
 
-### Option A: Local Maven Dependency (Recommended)
+### Option A: JitPack Dependency (Recommended)
+This option allows you to import the library directly from GitHub without building the source code yourself.
+
+1. **Add the JitPack Repository:**
+   In your target project's root `settings.gradle.kts` (or `build.gradle.kts`), add the JitPack maven repository:
+   ```kotlin
+   dependencyResolutionManagement {
+       repositories {
+           google()
+           mavenCentral()
+           maven("https://jitpack.io") // Add this line
+       }
+   }
+   ```
+
+2. **Add the Dependency:**
+   In your target project's shared/common module `build.gradle.kts` (e.g., `composeApp/build.gradle.kts`), add the dependency. Replace `Tag` with the latest release version (e.g., `1.0.0`) or a specific commit hash:
+   ```kotlin
+   kotlin {
+       sourceSets {
+           commonMain.dependencies {
+               implementation("com.github.kvarun701.icorp-library-for-composemultiplateform:library:Tag")
+           }
+       }
+   }
+   ```
+
+---
+
+### Option B: Local Maven Dependency
 This option compiles and installs the library into your local Maven cache, allowing any Compose Multiplatform project on your computer to import it.
 
 1. **Publish the Library:**
@@ -54,7 +83,7 @@ This option compiles and installs the library into your local Maven cache, allow
 
 ---
 
-### Option B: Direct Project Module Reference
+### Option C: Direct Project Module Reference
 1. **Copy the `:library` Module:**
    Copy the `library` folder from the `icorp` directory into your target project directory.
 
