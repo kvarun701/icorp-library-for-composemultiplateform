@@ -80,8 +80,13 @@ android {
     }
 }
 
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
 publishing {
     publications.withType<MavenPublication> {
+        artifact(javadocJar)
         pom {
             name.set("icorp")
             description.set("Compose Multiplatform Image Cropper")
@@ -115,6 +120,10 @@ publishing {
                 password = project.findProperty("ossrhPassword")?.toString() ?: ""
             }
         }
+        maven {
+            name = "Staging"
+            url = uri(layout.buildDirectory.dir("staging-deploy"))
+        }
     }
 }
 
@@ -124,9 +133,28 @@ signing {
     val signingPassword = project.findProperty("signingPassword")?.toString() ?: project.findProperty("signing.password")?.toString()
 
     if (!signingKey.isNullOrEmpty()) {
-        useInMemoryPgpKeys(signingKeyId ?: "", signingKey, signingPassword ?: "")
+        useInMemoryPgpKeys(signingKey, signingPassword ?: "")
         sign(publishing.publications)
     } else if (project.hasProperty("signing.secretKeyRingFile")) {
         sign(publishing.publications)
     }
+}
+
+tasks.register("debugSigning") {
+    doLast {
+        val signingKeyId = project.findProperty("signingKeyId")?.toString()
+        val signingKey = project.findProperty("signingKey")?.toString()?.replace("\\n", "\n")
+        val signingPassword = project.findProperty("signingPassword")?.toString()
+        println("signingKeyId: $signingKeyId")
+        println("signingPassword: '$signingPassword'")
+        println("signingKey length: ${signingKey?.length}")
+        println("signingKey starts with: ${signingKey?.take(40)}")
+    }
+}
+
+tasks.register<Zip>("zipStaging") {
+    dependsOn("publishAllPublicationsToStagingRepository")
+    from(layout.buildDirectory.dir("staging-deploy"))
+    archiveFileName.set("bundle.zip")
+    destinationDirectory.set(layout.buildDirectory)
 }
