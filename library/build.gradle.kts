@@ -96,7 +96,7 @@ publishing {
                 developer {
                     id.set("kvarun701")
                     name.set("Varun")
-                    email.set("kvarun701@gmail.com")
+                    email.set("varunpandit.net@gmail.com")
                 }
             }
             scm {
