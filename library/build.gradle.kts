@@ -120,7 +120,7 @@ publishing {
 
 signing {
     val signingKeyId = project.findProperty("signingKeyId")?.toString() ?: project.findProperty("signing.keyId")?.toString()
-    val signingKey = project.findProperty("signingKey")?.toString() ?: project.findProperty("signing.key")?.toString()
+    val signingKey = (project.findProperty("signingKey")?.toString() ?: project.findProperty("signing.key")?.toString())?.replace("\\n", "\n")
     val signingPassword = project.findProperty("signingPassword")?.toString() ?: project.findProperty("signing.password")?.toString()
 
     if (!signingKey.isNullOrEmpty()) {
